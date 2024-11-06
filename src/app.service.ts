@@ -1,26 +1,19 @@
 import { InjectQueue } from '@nestjs/bull';
 import { Injectable } from '@nestjs/common';
 import { Queue } from 'bull';
-import { Mail } from './dto/mail.interface';
-import { EMAIL_QUEUE } from './constant';
+import { EMAIL_QUEUE } from './constants';
 
 @Injectable()
 export class AppService {
   constructor(@InjectQueue(EMAIL_QUEUE) private readonly emailQueue: Queue) {}
 
-  async sendEmail(data: Mail) {
-    const job = await this.emailQueue.add({ data });
-    return { jbId: job.id };
+  getHello(): string {
+    return 'Hello, Email Service!';
   }
 
-  async sendWelcomeEmail(data: Mail) {
-    const job = await this.emailQueue.add('welcome', { data });
-    return { jobId: job.id };
-  }
-
-  async sendResetPasswordEmail(data: Mail) {
-    const job = await this.emailQueue.add('reset-password', { data });
-    console.log(data);
-    return { jobId: job.id };
+  async sendEmail(emailDetails: { to: string; subject: string; text: string }) {
+    await this.emailQueue.add(emailDetails);
+    console.log('Job added to the email queue:', emailDetails);
+    return { message: 'Email job added to the queue' };
   }
 }

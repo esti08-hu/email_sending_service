@@ -1,17 +1,12 @@
-import { MailerModule } from '@nestjs-modules/mailer';
-import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
-import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
-import { join } from 'path';
+import { BullModule } from '@nestjs/bull';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { EMAIL_QUEUE } from './constant';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { EmailProcessor } from './email.processor';
+import { EMAIL_QUEUE } from './constants';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
     BullModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -25,22 +20,8 @@ import { EmailProcessor } from './email.processor';
     BullModule.registerQueue({
       name: EMAIL_QUEUE,
     }),
-    MailerModule.forRoot({
-      transport: {
-        host: process.env.EMAIL_SERVICE,
-        port: Number(process.env.EMAIL_PORT),
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASSWORD,
-        },
-      },
-      template: {
-        dir: join(__dirname, 'templates'),
-        adapter: new HandlebarsAdapter(),
-      },
-    }),
   ],
   controllers: [AppController],
-  providers: [AppService, EmailProcessor],
+  providers: [AppService],
 })
 export class AppModule {}
