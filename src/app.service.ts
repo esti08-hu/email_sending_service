@@ -20,7 +20,6 @@ export class AppService {
 
   async sendResetPasswordEmail(data: Mail) {
     const job = await this.emailQueue.add('reset-password', { data });
-    console.log(data);
     return { jobId: job.id };
   }
 }
