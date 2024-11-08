@@ -15,11 +15,10 @@ export class EmailProcessor {
   async sendWelcomeEmail(job: Job<Mail>) {
     const { data } = job.data;
     this.logger.log(`Processing welcome email for: ${data.to}`);
-    console.log(data);
 
     try {
       await this.mailService.sendMail({
-        from: data.from,
+        from: process.env.EMAIL_USER,
         to: data.to,
         subject: data.subject,
         text: data.text,
@@ -42,7 +41,7 @@ export class EmailProcessor {
 
     try {
       await this.mailService.sendMail({
-        from: data.from,
+        from: process.env.EMAIL_USER,
         to: data.to,
         subject: data.subject,
         text: data.text,
