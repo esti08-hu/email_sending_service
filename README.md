@@ -39,7 +39,7 @@ This project is an email sending service built using the [NestJS](https://nestjs
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/esti08-hu/email_sending_service.git
-   cd email-sending-service
+   cd email_sending_service
    ```
 
 2. **Install dependencies**:
@@ -93,7 +93,6 @@ pnpm run start:prod
   - **Payload**:
     ```json
     {
-      "from": "sender@example.com",
       "to": "recipient@example.com",
       "subject": "Welcome",
       "text": "Welcome to our service!",
@@ -105,7 +104,6 @@ pnpm run start:prod
   - **Payload**:
     ```json
     {
-      "from": "sender@example.com",
       "to": "recipient@example.com",
       "subject": "Reset Password",
       "text": "Click the link to reset your password.",
@@ -140,8 +138,11 @@ pnpm run test:cov
 - **Redis Service**: Configured as a separate service in `docker-compose.yml` and linked with the application.
 - **Dockerfile**: Multi-stage Dockerfile for development and production builds, ensuring a lightweight production image.
 
+
 ## License
 
 This project is [MIT licensed](LICENSE).
 
 ---
+
+- **Author**: Estifanos A.

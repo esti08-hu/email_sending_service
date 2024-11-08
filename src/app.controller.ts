@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { AppService } from './app.service';
-import { Mail } from './dto/mail.dto';
+import { Mail, ScheduledMail } from './dto/mail.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('email')
@@ -14,11 +14,16 @@ export class AppController {
     description: 'The email has been successfully sent.',
   })
   async sendWelcome(@Body() data: Mail) {
-    await this.appService.sendWelcomeEmail(data);
+    return await this.appService.sendWelcomeEmail(data);
   }
 
   @Post('send-reset')
   async sendReset(@Body() data: Mail) {
-    await this.appService.sendResetPasswordEmail(data);
+    return await this.appService.sendResetPasswordEmail(data);
+  }
+
+  @Post('schedule')
+  async scheduleEmail(@Body() data: ScheduledMail) {
+    return await this.appService.scheduleEmailAt(data);
   }
 }
