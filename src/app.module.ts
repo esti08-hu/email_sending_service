@@ -27,7 +27,7 @@ import { EmailProcessor } from './email.processor';
     }),
     MailerModule.forRoot({
       transport: {
-        host: process.env.EMAIL_SERVICE,
+        host: process.env.EMAIL_HOST,
         port: Number(process.env.EMAIL_PORT),
         auth: {
           user: process.env.EMAIL_USER,
