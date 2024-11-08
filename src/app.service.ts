@@ -1,7 +1,7 @@
 import { InjectQueue } from '@nestjs/bull';
 import { Injectable } from '@nestjs/common';
 import { Queue } from 'bull';
-import { Mail } from './dto/mail.interface';
+import { Mail } from './dto/mail.dto';
 import { EMAIL_QUEUE } from './constant';
 
 @Injectable()

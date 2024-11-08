@@ -1,11 +1,11 @@
+
+---
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+  <p align="center">A robust email sending service built with <a href="http://nodejs.org" target="_blank">Node.js</a> and <a href="https://nestjs.com/" target="_blank">NestJS</a>, using Bull and Redis for job queuing and containerized with Docker for easy deployment.</p>
     <p align="center">
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
@@ -15,59 +15,133 @@
 <a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
 <a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
 <a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This project is an email sending service built using the [NestJS](https://nestjs.com/) framework. It utilizes [Bull](https://github.com/OptimalBits/bull) for managing job queues with Redis, allowing efficient processing of high volumes of email tasks, such as welcome emails and password reset notifications.
+
+## Features
+
+- **Job Queuing**: Uses Bull and Redis to queue email tasks, improving scalability and reliability.
+- **Template-Based Emails**: Easily create and manage different types of email templates.
+- **Scheduling and Delayed Delivery**: Schedule emails or delay them for future delivery.
+- **Containerized Deployment**: Dockerized for ease of deployment, compatible with Docker Compose.
+
+## Prerequisites
+
+- **Node.js** (version 14+ recommended)
+- **Redis** (for job queuing)
+- **Docker** (optional, for containerized deployment)
 
 ## Installation
 
-```bash
-$ pnpm install
-```
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/your-username/email-sending-service.git
+   cd email-sending-service
+   ```
 
-## Running the app
+2. **Install dependencies**:
+   ```bash
+   pnpm install
+   ```
+
+3. **Set up environment variables**:
+
+   Create a `.env` file in the root directory:
+   ```plaintext
+   REDIS_HOST=localhost
+   REDIS_PORT=6379
+   EMAIL_HOST=smtp.example.com
+   EMAIL_PORT=587
+   EMAIL_USER=your-email@example.com
+   EMAIL_PASSWORD=your-email-password
+   ```
+
+## Running the App
+
+### Local Development
 
 ```bash
-# development
-$ pnpm run start
+# development mode
+pnpm run start
 
 # watch mode
-$ pnpm run start:dev
+pnpm run start:dev
 
 # production mode
-$ pnpm run start:prod
+pnpm run start:prod
 ```
 
-## Test
+### Docker Deployment
+
+1. **Using Docker Compose**:
+
+   Ensure Docker is running and start the application with Redis:
+   ```bash
+   docker-compose up -d
+   ```
+
+2. **Access the Service**:
+   - The application will be accessible at `http://localhost:3000`.
+   - Redis will be running on `localhost:6379`.
+
+## API Endpoints
+
+- **POST /email/send-welcome**: Sends a welcome email.
+  - **Payload**:
+    ```json
+    {
+      "from": "sender@example.com",
+      "to": "recipient@example.com",
+      "subject": "Welcome",
+      "text": "Welcome to our service!",
+      "user": { "name": "John Doe" }
+    }
+    ```
+
+- **POST /email/send-reset**: Sends a password reset email.
+  - **Payload**:
+    ```json
+    {
+      "from": "sender@example.com",
+      "to": "recipient@example.com",
+      "subject": "Reset Password",
+      "text": "Click the link to reset your password.",
+      "user": { "name": "John Doe" }
+    }
+    ```
+
+## Testing
+
+Run the tests to verify functionality:
 
 ```bash
 # unit tests
-$ pnpm run test
+pnpm run test
 
 # e2e tests
-$ pnpm run test:e2e
+pnpm run test:e2e
 
 # test coverage
-$ pnpm run test:cov
+pnpm run test:cov
 ```
 
-## Support
+## Project Structure
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- **`src/app.module.ts`**: Main module where Bull and Mailer configurations are set up.
+- **`src/app.controller.ts`**: Defines API endpoints for sending emails.
+- **`src/email.processor.ts`**: Handles queued email jobs, processing and sending.
+- **`src/templates/`**: Directory for Handlebars email templates (`welcome.hbs`, `reset-password.hbs`).
 
-## Stay in touch
+## Docker Configuration
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- **Redis Service**: Configured as a separate service in `docker-compose.yml` and linked with the application.
+- **Dockerfile**: Multi-stage Dockerfile for development and production builds, ensuring a lightweight production image.
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+This project is [MIT licensed](LICENSE).
+
+---

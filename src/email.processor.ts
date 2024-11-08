@@ -1,6 +1,6 @@
 import { Process, Processor } from '@nestjs/bull';
 import { Job } from 'bull';
-import { Mail } from './dto/mail.interface';
+import { Mail } from './dto/mail.dto';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Logger } from '@nestjs/common';
 import { EMAIL_QUEUE } from './constant';
