@@ -38,7 +38,7 @@ This project is an email sending service built using the [NestJS](https://nestjs
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/email-sending-service.git
+   git clone https://github.com/esti08-hu/email_sending_service.git
    cd email-sending-service
    ```
 
